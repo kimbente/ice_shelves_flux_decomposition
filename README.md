@@ -12,3 +12,7 @@ Contribution:
 Idea:
 - Pretrain on hydrostatic equilibrium for better start?
 
+
+Proprocessing:
+- Ice shelf mask from Bedmap3
+- Erode mask edge by 5 km like in Bedmap3 paper

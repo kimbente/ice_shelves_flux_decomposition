@@ -1,6 +1,6 @@
 # Ice shelf flux decomposition
 
-In this repository we are learning the decomposition of Ross ice shelf flux vector fields into its divergence-free and curl-free vector field components with the help of a Helmholtz Neural Network (analog in architecture to the Dissipative Hamiltionian Neural Network, the DHNN, see [this Sosanya et al. 2022](https://arxiv.org/abs/2201.10085).) We thereby aim to provide a new (ML learned) estimate of mass loss representing the observational status-quo, and also a mesh-free and interpretable ice thickness model for Ross ice shelf.
+In this repository we learn the decomposition of the Ross ice shelf flux vector field into its divergence-free and curl-free vector field components (Helmholtz decomposition), with a Dissipative Hamiltionian Neural Network (DHNN, see [Sosanya et al. 2022](https://arxiv.org/abs/2201.10085)). Therein we aim to provide a new, machine learning based estimate of mass loss, that reflects the latest state of observation, and that can easily integrate new observations. The DHNN provides a continous (i.e. mesh-free) model of ice flux via an Implicit Neural Representation (INR), enabling flux divergences to be computed efficiently and at arbitraty spatial resolution via automatic differentiation. Furthermore, dividing the ice flux vector field by satilite-based ice velocity fields yields an ice thickness model for Ross ice shelf.
 
 # Output
 
@@ -54,9 +54,35 @@ In this repository we are learning the decomposition of Ross ice shelf flux vect
 
 # Equation
 
-∂t∂H ​+ ∇⋅(Hu) - SMB = Basal Melt
+From Morlighem et al. (2011)
+"A mass conservation approach for mapping glacier ice thickness"
 
-https://polar-iceshelf.org/news/ 
+dH/dt + ∇⋅(Hv) = M_s - M_b
+It follows
+- M_b = M_s - dH/dt - ∇⋅(Hv)
+- dH/dt = M_s - M_b - ∇⋅(Hv) (stated by Rignot et al. in the Supplementary materials) Quote "At any point on an ice shelf of thickness H and velocity vector v, the rate of ice-shelf thickening ∂H/∂t equals the sum of net surface mass balance SMB minus net basal melting B minus the lateral divergence in volume flux Hv (15)."
+
+- dH/dt -> thickness change rate
+    - dH/dt > 0 (positive) -> ice shelf thickening
+    - dH/dt < 0 (negative) -> ice shelf thinning
+- ∇⋅(Hv) -> flux divergence [m / yr]
+    - ∇⋅ -> divergence operator
+    - H -> ice thickness [m]
+    - v -> ice velocity [m / yr]
+- M_b -> basal melt rate (or basal mass balance, defined as basal melt - basal freeze)[m / yr]
+    - M_b > 0 (positive) -> melting
+    - M_b < 0 (negative) -> freezing
+    - NOTE: different sign conventions exist for this term
+- M_s -> surface mass balance (i.e. smb) defined as (accumulation - ablation) [m / yr]
+    - M_s > 0 (positive) -> accumulation
+    - M_b < 0 (negative) -> ablation
+
+- dH/dt where values > 0 indicate thickening rates and values < 0 indicate thinning rates.
+- ∇ ⋅ is the divergence operator.
+- H is vertical ice thickness in [m].
+- v are ice velocities. For ice shelves surface velocities should equal depth-averaged velocities (no shear).
+- smb is surface mass balance (accumulation - ablation) in [m / yr]
+- basal melt in [m / yr]
 
 # Inputs
 
@@ -87,3 +113,34 @@ Reference:
 - *Van Dalum, Christiaan T., Willem Jan van de Berg, Srinidhi N. Gadde, Maurice Van Tiggelen, Tijmen van der Drift, Erik van Meijgaard, Lambertus H. van Ulft, and Michiel R. Van Den Broeke. "First results of the polar regional climate model RACMO2. 4." The Cryosphere 18, no. 9 (2024): 4065-4088.*
 
 ![SMB estimates from RACMO2.4pw](figures/smb_ross_racmo.png)
+
+## Thickening rates
+
+[ATLAS/ICESat-2 L3B Gridded Antarctic and Arctic Land Ice Height Change, Version 4]
+(https://nsidc.org/data/atl15/versions/4)
+
+Use command line: https://search.earthdata.nasa.gov/downloads/5132364764
+
+
+Reference
+- "Smith, B., Sutterley, T., Dickinson, S., Jelley, B. P., Felikson, D., Neumann, T. A., Fricker, H. A., Gardner, A. S., Padman, L., Markus, T., Kurtz, N., Bhardwaj, S., Hancock, D. & Lee, J. (2024). ATLAS/ICESat-2 L3B Gridded Antarctic and Arctic Land Ice Height Change. (ATL15, Version 4). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/ATLAS/ATL15.004. Date Accessed 10-02-2025."
+
+See [user guide](https://nsidc.org/sites/default/files/documents/user-guide/atl15-v004-userguide.pdf)
+
+Overview of datasets [here](https://icesat-2.gsfc.nasa.gov/science/data-products)
+
+# Other resources
+
+- [Polar Iceshelf website](https://polar-iceshelf.org/news/)
+- [Land-based ice height change between ICESat and ICESat-2](https://svs.gsfc.nasa.gov/4796/)
+
+# Limitations
+- temporal mismatch
+- noise
+
+# ToDO
+
+- [] integrate dH/dt to improve over steady state estimates
+    - [] hydrostatic equilibrium needed to translate surface elevation change into thickness change
+- [] produce thickness map
+- [] use directional guidance if necessary

@@ -1,10 +1,4 @@
 #!/bin/bash
-# chmod 777 /home/kim/ice_shelves_flux_decomposition/download.sh
-# /home/kim/ice_shelves_flux_decomposition/download.sh
-# credentials: k***...
-
-
-#!/bin/bash
 
 GREP_OPTIONS=''
 
@@ -33,14 +27,14 @@ exit_with_error() {
     echo
     echo $1
     echo
-    echo "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL15/004/ATL15_A3_0325_01km_004_05.nc"
+    echo "https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL15/004/ATL15_IS_0325_40km_004_05.nc"
     echo
     exit 1
 }
 
 prompt_credentials
   detect_app_approval() {
-    approved=`curl -s -b "$cookiejar" -c "$cookiejar" -L --max-redirs 5 --netrc-file "$netrc" https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL15/004/ATL15_A3_0325_01km_004_05.nc -w '\n%{http_code}' | tail  -1`
+    approved=`curl -s -b "$cookiejar" -c "$cookiejar" -L --max-redirs 5 --netrc-file "$netrc" https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL15/004/ATL15_IS_0325_40km_004_05.nc -w '\n%{http_code}' | tail  -1`
     if [ "$approved" -ne "200" ] && [ "$approved" -ne "301" ] && [ "$approved" -ne "302" ]; then
         # User didn't approve the app. Direct users to approve the app in URS
         exit_with_error "Please ensure that you have authorized the remote application by visiting the link below "
@@ -49,7 +43,7 @@ prompt_credentials
 
 setup_auth_curl() {
     # Firstly, check if it require URS authentication
-    status=$(curl -s -z "$(date)" -w '\n%{http_code}' https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL15/004/ATL15_A3_0325_01km_004_05.nc | tail -1)
+    status=$(curl -s -z "$(date)" -w '\n%{http_code}' https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL15/004/ATL15_IS_0325_40km_004_05.nc | tail -1)
     if [[ "$status" -ne "200" && "$status" -ne "304" ]]; then
         # URS authentication is required. Now further check if the application/remote service is approved.
         detect_app_approval
@@ -101,6 +95,6 @@ fetch_urls() {
 }
 
 fetch_urls <<'EDSCEOF'
-https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL15/004/ATL15_A3_0325_01km_004_05.nc
-https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL15/004/ATL15_A4_0325_01km_004_05.nc
+https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL15/004/ATL15_A4_0325_10km_004_05.nc
+https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/ATLAS/ATL15/004/ATL15_A3_0325_10km_004_05.nc
 EDSCEOF

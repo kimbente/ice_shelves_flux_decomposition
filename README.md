@@ -133,6 +133,8 @@ Overview of datasets [here](https://icesat-2.gsfc.nasa.gov/science/data-products
 
 - [Polar Iceshelf website](https://polar-iceshelf.org/news/)
 - [Land-based ice height change between ICESat and ICESat-2](https://svs.gsfc.nasa.gov/4796/)
+- [Adusumilli et al. 2020 Nature Geoscience paper, estimating basal melt](https://www.nature.com/articles/s41561-020-0616-z)
+    - Lagrangian versus Euler method
 
 # Limitations
 - temporal mismatch

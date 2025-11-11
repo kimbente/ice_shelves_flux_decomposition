@@ -142,6 +142,7 @@ Overview of datasets [here](https://icesat-2.gsfc.nasa.gov/science/data-products
 
 # ToDO
 
+- [] use higher resolution smb map from [Noel et al. 2023 Higher Antarctic ice sheet accumulation and surface melt rates revealed at 2 km resolution](https://www.nature.com/articles/s41467-023-43584-6)
 - [] integrate dH/dt to improve over steady state estimates
     - [] hydrostatic equilibrium needed to translate surface elevation change into thickness change
 - [] produce thickness map
